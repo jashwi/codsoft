@@ -1,0 +1,160 @@
+Practical 10- Data share for exam section app
+App(Examsection)-
+MainActivity.java-
+package com.example.examsection;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText editName, editBranch, editSubject, editYear;
+    Button btnSubmit;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editName = findViewById(R.id.editName);
+        editBranch = findViewById(R.id.editBranch);
+        editSubject = findViewById(R.id.editSubject);
+        editYear = findViewById(R.id.editYear);
+        btnSubmit = findViewById(R.id.btnSubmit);
+
+        btnSubmit.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
+            intent.putExtra("name", editName.getText().toString());
+            intent.putExtra("branch", editBranch.getText().toString());
+            intent.putExtra("subject", editSubject.getText().toString());
+            intent.putExtra("year", editYear.getText().toString());
+            startActivity(intent);
+        });
+    }
+}
+
+
+
+
+
+activity_main.xml-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText android:id="@+id/editName" android:hint="Enter Name"
+        android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+    <EditText android:id="@+id/editBranch" android:hint="Enter Branch"
+        android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+    <EditText android:id="@+id/editSubject" android:hint="Enter Subject"
+        android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+    <EditText android:id="@+id/editYear" android:hint="Enter Year"
+        android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+    <Button android:id="@+id/btnSubmit" android:text="Submit"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>
+
+
+
+
+
+DisplayActivity.java-
+package com.example.examsection;
+
+import android.os.Bundle;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class DisplayActivity extends AppCompatActivity {
+
+    TextView textName, textBranch, textSubject, textYear;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_display);
+
+        textName = findViewById(R.id.textName);
+        textBranch = findViewById(R.id.textBranch);
+        textSubject = findViewById(R.id.textSubject);
+        textYear = findViewById(R.id.textYear);
+
+        // Receive data
+        String name = getIntent().getStringExtra("name");
+        String branch = getIntent().getStringExtra("branch");
+        String subject = getIntent().getStringExtra("subject");
+        String year = getIntent().getStringExtra("year");
+
+        // Set data
+        textName.setText("Name: " + name);
+        textBranch.setText("Branch: " + branch);
+        textSubject.setText("Subject: " + subject);
+        textYear.setText("Year: " + year);
+    }
+}
+
+
+
+
+
+
+
+activity_display.xml-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView android:id="@+id/textName" android:textSize="18sp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/textBranch" android:textSize="18sp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/textSubject" android:textSize="18sp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/textYear" android:textSize="18sp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+</LinearLayout>
+
+
+
+
+
+
+Manifest.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:label="Exam Section App"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+
+        <activity android:name=".DisplayActivity" android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+
+</manifest>
+
