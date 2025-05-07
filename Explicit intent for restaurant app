@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
+
+
+
+
+
 SecondActivity.java -
 package com.example.restaurantapp;
 
@@ -71,6 +76,12 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
 }
+
+
+
+
+
+
 activity_main.xml-
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
@@ -96,6 +107,9 @@ activity_main.xml-
         android:layout_height="wrap_content"
         android:textSize="18sp"/>
 </LinearLayout>
+
+
+
 
 
 activity_second.xml-
