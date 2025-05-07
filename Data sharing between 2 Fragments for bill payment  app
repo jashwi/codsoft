@@ -1,0 +1,190 @@
+Practical 3- Data sharing between 2 Fragments for Tourism / bill payment  app.
+App-(BillPay)
+MainActivity.java-
+package com.example.billpay;
+
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+
+FirstFragment.java-
+package com.example.billpay;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+public class FirstFragment extends Fragment {
+
+    public FirstFragment() {}
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_first, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        Button btnPay = view.findViewById(R.id.btnPay);
+
+        btnPay.setOnClickListener(v -> {
+            int price1 = 100; // Food 1
+            int price2 = 150; // Food 2
+            int total = price1 + price2;
+            viewModel.setTotalPrice(total);
+        });
+    }
+}
+
+SecondFragment.java-
+package com.example.billpay;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+public class SecondFragment extends Fragment {
+
+    private TextView txtTotal, txtStatus;
+
+    public SecondFragment() {}
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_second, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        txtTotal = view.findViewById(R.id.txtTotal);
+        txtStatus = view.findViewById(R.id.txtStatus);
+
+        SharedViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
+        viewModel.getTotalPrice().observe(getViewLifecycleOwner(), total -> {
+            txtTotal.setText("Total: ₹" + total);
+            txtStatus.setText("Payment Done");
+        });
+    }
+}
+
+SharedViewModel.java(in com.example.billpay right click new then on top java class click it )-
+package com.example.billpay;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+public class SharedViewModel extends ViewModel {
+    private final MutableLiveData<Integer> totalPrice = new MutableLiveData<>(0);
+
+    public void setTotalPrice(int price) {
+        totalPrice.setValue(price);
+    }
+
+    public LiveData<Integer> getTotalPrice() {
+        return totalPrice;
+    }
+}
+
+activity_main.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/fragment_first"
+        android:name="com.example.billpay.FirstFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <fragment
+        android:id="@+id/fragment_second"
+        android:name="com.example.billpay.SecondFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+</LinearLayout>
+
+fragment_first.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="Burger - ₹100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:text="Pizza - ₹150"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btnPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pay" />
+</LinearLayout>
+
+fragment_second.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total: ₹0"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:textColor="#4CAF50"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>
+
+
+
+
+
+
