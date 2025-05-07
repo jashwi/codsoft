@@ -1,0 +1,130 @@
+Practical 6-Recycler view for beauty products/  sports items / list of movies
+App(SportsListApp)-
+MainActivity.java-
+package com.example.sportslistapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    SportAdapter adapter;
+    List<String> sports;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        sports = new ArrayList<>();
+        sports.add("Football");
+        sports.add("Cricket");
+        sports.add("Basketball");
+        sports.add("Tennis");
+        sports.add("Badminton");
+        sports.add("Volleyball");
+        sports.add("Hockey");
+        sports.add("Table Tennis");
+        sports.add("Baseball");
+        sports.add("Rugby");
+        sports.add("Boxing");
+        sports.add("Wrestling");
+        sports.add("Kabaddi");
+        sports.add("Golf");
+        sports.add("Swimming");
+
+        adapter = new SportAdapter(sports);
+        recyclerView.setAdapter(adapter);
+    }
+}
+
+
+
+activity_main.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
+
+
+
+
+SportAdapter.java-(new class created)
+package com.example.sportslistapp;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+public class SportAdapter extends RecyclerView.Adapter<SportAdapter.SportViewHolder> {
+    private List<String> sportList;
+
+    public SportAdapter(List<String> sportList) {
+        this.sportList = sportList;
+    }
+
+    @NonNull
+    @Override
+    public SportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sport, parent, false);
+        return new SportViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SportViewHolder holder, int position) {
+        String sport = sportList.get(position);
+        holder.textView.setText(sport);
+    }
+
+    @Override
+    public int getItemCount() {
+        return sportList.size();
+    }
+
+    public static class SportViewHolder extends RecyclerView.ViewHolder {
+        TextView textView;
+        public SportViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.textViewSport);
+        }
+    }
+}
+
+
+
+
+item_sport.xml-(new layout resource file)-
+<!-- res/layout/item_sport.xml -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textViewSport"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:padding="16dp"
+    android:importantForAccessibility="yes"
+    android:contentDescription="@{textViewSport.text}" />
+
+
+
