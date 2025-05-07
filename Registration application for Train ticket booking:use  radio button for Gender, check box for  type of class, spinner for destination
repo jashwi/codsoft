@@ -1,0 +1,189 @@
+Practical 5- Registration application for Train ticket booking:use  radio button for Gender, check box for  type of class, spinner for destination./ any app
+App(Trainticket)-
+MainActivity.java- 
+package com.example.trainticket;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText editName;
+    RadioGroup radioGroupGender;
+    CheckBox checkGeneral, checkSleeper, checkAC;
+    Spinner spinnerDestination;
+    Button btnSubmit;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editName = findViewById(R.id.editName);
+        radioGroupGender = findViewById(R.id.radioGroupGender);
+        checkGeneral = findViewById(R.id.checkGeneral);
+        checkSleeper = findViewById(R.id.checkSleeper);
+        checkAC = findViewById(R.id.checkAC);
+        spinnerDestination = findViewById(R.id.spinnerDestination);
+        btnSubmit = findViewById(R.id.btnSubmit);
+
+        String[] destinations = {"Mumbai", "Pune", "Nagpur"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, destinations);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDestination.setAdapter(adapter);
+
+        btnSubmit.setOnClickListener(v -> {
+            String name = editName.getText().toString();
+            int selectedId = radioGroupGender.getCheckedRadioButtonId();
+            RadioButton selectedGender = findViewById(selectedId);
+            String gender = selectedGender.getText().toString();
+
+            StringBuilder classType = new StringBuilder();
+            if (checkGeneral.isChecked()) classType.append("General ");
+            if (checkSleeper.isChecked()) classType.append("Sleeper ");
+            if (checkAC.isChecked()) classType.append("AC ");
+
+            String destination = spinnerDestination.getSelectedItem().toString();
+
+            Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("gender", gender);
+            intent.putExtra("classType", classType.toString());
+            intent.putExtra("destination", destination);
+            startActivity(intent);
+        });
+    }
+}
+
+
+activity_main.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Gender:"
+            android:layout_marginTop="12dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/radioMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"/>
+            <RadioButton
+                android:id="@+id/radioFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Class Type:"
+            android:layout_marginTop="12dp" />
+
+        <CheckBox
+            android:id="@+id/checkGeneral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="General" />
+
+        <CheckBox
+            android:id="@+id/checkSleeper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sleeper" />
+
+        <CheckBox
+            android:id="@+id/checkAC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AC" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Destination:"
+            android:layout_marginTop="12dp" />
+
+        <Spinner
+            android:id="@+id/spinnerDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</ScrollView>
+
+
+ShowActivity.java-
+package com.example.trainticket;
+
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ShowActivity extends AppCompatActivity {
+    TextView textDetails;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show);
+
+        textDetails = findViewById(R.id.textDetails);
+
+        String name = getIntent().getStringExtra("name");
+        String gender = getIntent().getStringExtra("gender");
+        String classType = getIntent().getStringExtra("classType");
+        String destination = getIntent().getStringExtra("destination");
+
+        textDetails.setText("Name: " + name + "\nGender: " + gender + "\nClass: " + classType + "\nDestination: " + destination);
+    }
+}
+
+
+activity_show.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
+</LinearLayout>
+
+
+
