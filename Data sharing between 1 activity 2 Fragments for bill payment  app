@@ -14,6 +14,10 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
+
+
+
+
 FirstFragment.java-
 package com.example.billpay;
 
@@ -49,6 +53,10 @@ public class FirstFragment extends Fragment {
         });
     }
 }
+
+
+
+
 
 SecondFragment.java-
 package com.example.billpay;
@@ -88,6 +96,14 @@ public class SecondFragment extends Fragment {
     }
 }
 
+
+
+
+
+
+
+
+
 SharedViewModel.java(in com.example.billpay right click new then on top java class click it )-
 package com.example.billpay;
 
@@ -106,6 +122,14 @@ public class SharedViewModel extends ViewModel {
         return totalPrice;
     }
 }
+
+
+
+
+
+
+
+
 
 activity_main.xml-
 <?xml version="1.0" encoding="utf-8"?>
@@ -129,6 +153,14 @@ activity_main.xml-
         android:layout_weight="1"/>
 
 </LinearLayout>
+
+
+
+
+
+
+
+
 
 fragment_first.xml-
 <?xml version="1.0" encoding="utf-8"?>
@@ -157,6 +189,13 @@ fragment_first.xml-
         android:layout_height="wrap_content"
         android:text="Pay" />
 </LinearLayout>
+
+
+
+
+
+
+
 
 fragment_second.xml-
 <?xml version="1.0" encoding="utf-8"?>
