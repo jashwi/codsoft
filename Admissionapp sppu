@@ -1,0 +1,176 @@
+MainActivity.java-
+package com.example.admissionapp;
+
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button btnPopup;
+    TextView contextText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btnPopup = findViewById(R.id.btnPopup);
+        contextText = findViewById(R.id.contextText);
+
+        // Register context menu
+        registerForContextMenu(contextText);
+
+        // Show popup menu on button click
+        btnPopup.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, btnPopup);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_popup, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                Toast.makeText(MainActivity.this, "Popup selected: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
+            });
+            popupMenu.show();
+        });
+    }
+
+    // Options Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_optional, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Toast.makeText(this, "Option selected: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Context Menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.menu_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Toast.makeText(this, "Context selected: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        return true;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+activity_main.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnPopup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eligibility Menu" />
+
+    <TextView
+        android:id="@+id/contextText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Long press me for context menu"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:background="#EFEFEF"
+        android:layout_marginTop="20dp" />
+</LinearLayout>
+
+
+
+
+
+menu_optional.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item1" android:title="ENGINEERING" />
+    <item android:id="@+id/item2" android:title="ARTS" />
+    <item android:id="@+id/item3" android:title="COMERCE" />
+</menu>
+
+
+
+
+
+
+menu_context.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/context_entername" android:title="Enter Name" />
+    <item android:id="@+id/context_emailid" android:title="Emailid" />
+    <item android:id="@+id/context_contact" android:title="Contact" />
+</menu>
+
+
+
+
+
+menu_popup.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/popup1" android:title="Eligible" />
+    <item android:id="@+id/popup2" android:title="Noteligble" />
+</menu>
+
+
+
+
+
+
+AndroidMainfest.xml-
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.admissionapp">
+
+    <application
+        android:allowBackup="true"
+        android:label="AdmissionApp"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+ 
+                                                      
+ 
+                                                     
