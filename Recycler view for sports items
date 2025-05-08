@@ -128,3 +128,11 @@ item_sport.xml-(new layout resource file)-
 
 
 
+
+
+build.gradle (app)
+dependencies {
+    implementation 'androidx.recyclerview:recyclerview:1.3.1'
+}
+
+
